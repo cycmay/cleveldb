@@ -16,25 +16,7 @@
 #include "util/coding.h"
 
 namespace leveldb {
-
-struct Table::Rep {
-  ~Rep() {
-    delete filter;
-    delete[] filter_data;
-    delete index_block;
-  }
-
-  Options options;
-  Status status;
-  RandomAccessFile* file;
-  uint64_t cache_id;
-  FilterBlockReader* filter;
-  const char* filter_data;
-
-  BlockHandle metaindex_handle;  // Handle to metaindex_block: saved from footer
-  Block* index_block;
-};
-
+    
 Status Table::Open(const Options& options, RandomAccessFile* file,
                    uint64_t size, Table** table) {
   *table = nullptr;

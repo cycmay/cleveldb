@@ -23,6 +23,7 @@
 #include "db/version_edit.h"
 #include "port/port.h"
 #include "port/thread_annotations.h"
+#include "lindex/lindex.h"
 
 namespace leveldb {
 
@@ -117,6 +118,7 @@ class Version {
  private:
   friend class Compaction;
   friend class VersionSet;
+  friend class LIndex;
 
   class LevelFileNumIterator;
 

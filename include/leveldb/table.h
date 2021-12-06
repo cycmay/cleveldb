@@ -9,6 +9,10 @@
 
 #include "leveldb/export.h"
 #include "leveldb/iterator.h"
+#include "table/filter_block.h"
+#include "table/format.h"
+#include "lindex/lindex.h"
+#include "table/block.h"
 
 namespace leveldb {
 
@@ -60,7 +64,24 @@ class LEVELDB_EXPORT Table {
 
  private:
   friend class TableCache;
-  struct Rep;
+  friend class LIndex;
+  struct Rep{
+    ~Rep() {
+        delete filter;
+        delete[] filter_data;
+        delete index_block;
+    }
+
+    Options options;
+    Status status;
+    RandomAccessFile* file;
+    uint64_t cache_id;
+    FilterBlockReader* filter;
+    const char* filter_data;
+
+    BlockHandle metaindex_handle;  // Handle to metaindex_block: saved from footer
+    Block* index_block;
+  };
 
   static Iterator* BlockReader(void*, const ReadOptions&, const Slice&);
 

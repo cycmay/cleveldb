@@ -73,6 +73,7 @@ class DBImpl : public DB {
 
  private:
   friend class DB;
+  friend class LIndex;
   struct CompactionState;
   struct Writer;
 

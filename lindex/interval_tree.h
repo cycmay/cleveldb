@@ -1,7 +1,7 @@
 #pragma once
 
-#include<iostream>
-#include<iomanip>
+#include <iomanip>
+#include <algorithm>
 
  
 namespace leveldb{
@@ -169,11 +169,11 @@ namespace leveldb{
                 }
 
                 IntervalT_InorderWalk(x->left);
-                cout<<"["<<setw(3)<<x->inte.low<<setw(3)<<x->inte.high<<"  ]";
-                if(x->color==1)
-                    cout<<"     Red       "<<x->max<<endl;
-                else
-                    cout<<"     Black     "<<x->max<<endl;
+                // cout<<"["<<setw(3)<<x->inte.low<<setw(3)<<x->inte.high<<"  ]";
+                // if(x->color==1)
+                //     cout<<"     Red       "<<x->max<<endl;
+                // else
+                //     cout<<"     Black     "<<x->max<<endl;
                 IntervalT_InorderWalk(x->right);
             
             }
@@ -313,7 +313,7 @@ namespace leveldb{
                 IntervalTNode<TC> *x=this->root;
                 while(x != NIL)
                 { 
-                    x->max=max(x->max,z->max);     //Maintaining the max value of each node from z up to root
+                    x->max=std::max(x->max,z->max);     //Maintaining the max value of each node from z up to root
                     y=x;
                     if(z->key < x->key)
                         x=x->left;
@@ -442,59 +442,3 @@ namespace leveldb{
     
     };
 }
-
- 
- 
-// int main()
-// {
-// 	interval A[]={{16,21},{8,9},{25,30},{5,8},{15,23},{17,19},{26,26},{0,3},{6,10},{19,20}};
-// 	int n=sizeof(A)/sizeof(interval);
-	
-// 	cout<<"/*---------------------Create Interval Tree-------------------*/"<<endl;
-// 	IntervalTree *T=new IntervalTree();
-// 	T->root=NIL;
-// 	for(int i=0;i<n;i++)
-// 		IntervalT_Insert(T,A[i]);
-// 	cout<<"The interval tree is:"<<endl;
-// 	IntervalT_InorderWalk(T->root);
-// 	cout<<"The root of the tree is:"<<T->root->inte.low<<"   "<<T->root->inte.high<<endl;
-// 	cout<<"/*-------------------------------------------------------------*/"<<endl;
- 
-// 	cout<<"/*--------------------Searching Interval Tree------------------*/"<<endl;
-// 	interval sInt;
-// 	cout<<"Please input the searching interval:";
-// 	cin>>sInt.low>>sInt.high;
-// 	IntervalTNode<TC> *sITNode=NIL;
-// 	sITNode=IntervalT_Search(T,sInt);
-// 	if(sITNode==NIL)
-// 		cout<<"The searching interval doesn't exist in the tree."<<endl;
-// 	else{
-// 		cout<<"The overlap interval is:"<<endl;
-// 		cout<<"["<<sITNode->inte.low<<"  "<<sITNode->inte.high<<"]";
-// 		if(sITNode->color==0)
-// 			cout<<"   color:RED     ";
-// 		else
-// 			cout<<"   color:BLACK   ";
-// 		cout<<"Max:"<<sITNode->max<<endl;
-// 		}
-// 	cout<<"/*------------------Deleting INterval Tree--------------------*/"<<endl;
-// 	interval dInt;
-// 	cout<<"Please input the deleting interval:";
-// 	cin>>dInt.low>>dInt.high;
-// 	IntervalTNode<TC>  *dITNode=NIL;
-// 	dITNode=IntervalT_Search(T,dInt);
-// 	if(dITNode==NIL)
-// 		cout<<"The deleting interval doesn't exist in the tree."<<endl;
-// 	else
-// 	{ 
-// 		IntervalT_Delete(T,dITNode);
-// 		cout<<"After deleting ,the interval tree is:"<<endl;
-// 		IntervalT_InorderWalk(T->root);
-// 		cout<<"The root of the tree is:"<<T->root->inte.low<<"   "<<T->root->inte.high<<endl;
-// 		}
-// 	cout<<"/*------------------------------------------------------------*/"<<endl;
- 
- 
-// 	return 0;
-// 	}
- 

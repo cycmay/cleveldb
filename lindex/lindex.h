@@ -4,6 +4,8 @@
 #include "leveldb/status.h"
 #include "leveldb/db.h"
 #include "db/db_impl.h"
+#include "lindex/model_set.h"
+#include "lindex/model.h"
 
 namespace leveldb{
 
@@ -19,6 +21,9 @@ public:
     ~LIndex(){};
 
     Status Build(DBImpl *);
+private:
+    // LModelSet 
+
 
 }; 
 }

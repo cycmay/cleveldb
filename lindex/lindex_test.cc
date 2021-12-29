@@ -4,6 +4,7 @@
 
 #include "lindex/model.h"
 #include "lindex/binseca.h"
+#include "lindex/interval_tree.h"
 
 class Key{
 
@@ -126,8 +127,92 @@ bool binseca_test(){
     return true;
 }
 
+bool interval_tree_test(){
+
+    class interval{
+        public:
+            int low;
+            int high;
+
+            interval(){};
+            interval(int low, int high){
+                this->low=low;
+                this->high=high;
+            };
+            interval & operator=(const interval &inte){
+                this->low = inte.low;
+                this->high = inte.high;
+                return *this;
+            };
+    };
+
+
+    interval A[]={interval(16,21), 
+                    interval(8,9), 
+                    interval(25,30), 
+                    interval(5,8),
+                    interval(15,23),
+                    interval(17,19), 
+                    interval(26,26),
+                    interval(0,3), 
+                    interval(6,10),
+                    interval(19,20)};
+
+	int n=sizeof(A)/sizeof(interval);
+	
+	std::cout<<"/*---------------------Create Interval Tree-------------------*/"<<std::endl;
+	leveldb::IntervalTree<interval> *T=new leveldb::IntervalTree<interval>();
+	T->root=T->NIL;
+	for(int i=0;i<n;i++)
+		T->IntervalT_Insert(A[i]);
+	std::cout<<"The interval tree is:"<<std::endl;
+	T->IntervalT_InorderWalk(T->root);
+	std::cout<<"The root of the tree is:"<<T->root->inte.low<<"   "<<T->root->inte.high<<std::endl;
+	std::cout<<"/*-------------------------------------------------------------*/"<<std::endl;
+ 
+	std::cout<<"/*--------------------Searching Interval Tree------------------*/"<<std::endl;
+	interval sInt;
+	
+	sInt.low = 6;
+    sInt.high = 7;
+	leveldb::IntervalTNode<interval> *sITNode=T->NIL;
+	sITNode=T->IntervalT_Search(sInt);
+	if(sITNode==T->NIL)
+		std::cout<<"The searching interval doesn't exist in the tree."<<std::endl;
+	else{
+		std::cout<<"The overlap interval is:"<<std::endl;
+		std::cout<<"["<<sITNode->inte.low<<"  "<<sITNode->inte.high<<"]";
+		if(sITNode->color==0)
+			std::cout<<"   color:RED     ";
+		else
+			std::cout<<"   color:BLACK   ";
+		std::cout<<"Max:"<<sITNode->max<<std::endl;
+		}
+	std::cout<<"/*------------------Deleting INterval Tree--------------------*/"<<std::endl;
+	interval dInt;
+	dInt.low=6;
+    dInt.high=7;
+	leveldb::IntervalTNode<interval>  *dITNode=T->NIL;
+	dITNode=T->IntervalT_Search(dInt);
+	if(dITNode==T->NIL)
+		std::cout<<"The deleting interval doesn't exist in the tree."<<std::endl;
+	else
+	{ 
+		T->IntervalT_Delete(dITNode);
+		std::cout<<"After deleting ,the interval tree is:"<<std::endl;
+		T->IntervalT_InorderWalk(T->root);
+		std::cout<<"The root of the tree is:"<<T->root->inte.low<<"   "<<T->root->inte.high<<std::endl;
+		}
+	std::cout<<"/*------------------------------------------------------------*/"<<std::endl;
+ 
+ 
+    
+    return true;
+}
+
 int main(){
     linear_model_test();
     assert(binseca_test());
+    interval_tree_test();
     return 0;
 }
